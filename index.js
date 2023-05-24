@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const AWS = require('aws-sdk');
-
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
@@ -9,24 +9,18 @@ const port = 3000;
 require('dotenv').config();
 
 // Set the instance ID
-const instanceId = "i-0d4e4d590bac81179";
+const instanceId = process.env.AWS_INSTANCE_ID;
 
 // Configure the AWS SDK
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-//   region: process.env.AWS_REGION,
-// });
-
 AWS.config.update({
-  accessKeyId: "AKIA2X3IJDR5AS5WTL45",
-  secretAccessKey: "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",
-  region: "ap-southeast-1",
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
 });
 
 // Create an instance of the EC2 service
 const ec2 = new AWS.EC2();
-
+app.use(cors());
 // sendFile will go here
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/index.html'));
